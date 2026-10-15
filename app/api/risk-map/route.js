@@ -1,11 +1,7 @@
-import { createClient } from "@supabase/supabase-js";
- 
-const sb = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_KEY
-);
+import { getServerSupabase } from "@/lib/server-supabase";
  
 export async function GET() {
+  const sb = getServerSupabase();
   const { data: farms } = await sb
     .from("farm_profiles")
     .select("id, farm_name, county, lat, lon");

@@ -3,13 +3,8 @@
 // Receives all 8 agent outputs, fuses them into unified farm intelligence
 // and saves results to Supabase health_scores table
 
-import { createClient } from "@supabase/supabase-js";
 import { createOpenAIJsonResponse } from "@/lib/openai";
-
-const sb = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_KEY
-);
+import { getServerSupabase } from "@/lib/server-supabase";
 
 // ─── HELPER: call Claude AI ────────────────────────────────────────
 async function callOpenAI(instructions, input) {
@@ -19,6 +14,7 @@ async function callOpenAI(instructions, input) {
 // ─── POST: run core fusion ─────────────────────────────────────────
 export async function POST(request) {
   try {
+    const sb = getServerSupabase();
     const body = await request.json();
     const { farm_id, agents } = body;
 

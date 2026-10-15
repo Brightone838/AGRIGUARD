@@ -1,11 +1,7 @@
-import { createClient } from "@supabase/supabase-js";
-
-const sb = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_KEY
-);
+import { getServerSupabase } from "@/lib/server-supabase";
 
 export async function POST(request) {
+  const sb = getServerSupabase();
   const body = await request.json();
   const { source_id, payload } = body;
 

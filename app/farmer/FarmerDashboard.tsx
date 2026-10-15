@@ -4,6 +4,7 @@ import {
   ResponsiveContainer, BarChart, Bar, Cell ,CartesianGrid
 } from "recharts";
 import AvalancheTrustLayerPage from "../avalanche/page";
+import LeafDiagnosisPage from "./LeafDiagnosisPage";
 
 // ─── THEME ────────────────────────────────────────────────────────
 const F = {
@@ -40,6 +41,7 @@ html,body{background:#f0f7f0;font-family:'Inter',sans-serif}
 ::-webkit-scrollbar{width:4px}
 ::-webkit-scrollbar-track{background:#f0f7f0}
 ::-webkit-scrollbar-thumb{background:#c8dcc8;border-radius:2px}
+@media(max-width:720px){.farmer-sidebar{display:none!important}.farmer-content{min-width:0}.farmer-main{padding:16px!important}.farmer-mobile-nav{display:flex!important;position:sticky;bottom:0;z-index:50;padding-bottom:env(safe-area-inset-bottom)}}
 `;
 
 // ─── MOCK DATA ────────────────────────────────────────────────────
@@ -137,6 +139,7 @@ const QUICK_ACTIONS = [
 const NAV_ITEMS = [
   { id: "dashboard",    icon: "🏠", label: "Home"          },
   { id: "farm",         icon: "🌿", label: "My Farm"       },
+  { id: "leaf-diagnosis", icon: "🔬", label: "Leaf Diagnosis" },
   { id: "weather",      icon: "⛅", label: "Weather"       },
   { id: "alerts",       icon: "🔔", label: "Alerts"        },
   { id: "recommendations", icon: "💡", label: "Recommendations" },
@@ -272,7 +275,7 @@ function CheckRow({ label, value }) {
 // ─── SIDEBAR ──────────────────────────────────────────────────────
 function Sidebar({ page, setPage, weather, alertCount }) {
   return (
-    <div style={{ width: 220, background: F.sidebar, color: F.white,
+    <div className="farmer-sidebar" style={{ width: 220, background: F.sidebar, color: F.white,
       display: "flex", flexDirection: "column", position: "sticky",
       top: 0, height: "100vh", flexShrink: 0 }}>
 
@@ -1268,6 +1271,7 @@ export default function FarmerDashboard({ onSwitchToMachine }) {
   const pages = {
     dashboard:      <DashboardPage data={data} loading={loading} onMarkDone={() => setDone(true)} done={done} setPage={setPage} />,
     farm:           <MyFarmPage />,
+    "leaf-diagnosis": <LeafDiagnosisPage />,
     weather:        <WeatherPage />,
     alerts:         <AlertsPage data={data} />,
     recommendations:<RecommendationsPage data={data} />,
@@ -1283,7 +1287,7 @@ export default function FarmerDashboard({ onSwitchToMachine }) {
       <style>{STYLES}</style>
       <Sidebar page={page} setPage={setPage} weather={weather} alertCount={alertCount} />
 
-      <div style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "hidden" }}>
+      <div className="farmer-content" style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "hidden" }}>
         {/* Top bar */}
         <div style={{ height: 60, background: F.card, borderBottom: "1px solid " + F.border,
           padding: "0 24px", display: "flex", alignItems: "center",
@@ -1318,12 +1322,12 @@ export default function FarmerDashboard({ onSwitchToMachine }) {
         </div>
 
         {/* Main content */}
-        <main style={{ flex: 1, overflowY: "auto", padding: 24 }}>
+        <main className="farmer-main" style={{ flex: 1, overflowY: "auto", padding: 24 }}>
           {pages[page] || pages.dashboard}
         </main>
 
         {/* Mobile bottom nav */}
-        <div style={{ display: "none", background: F.card, borderTop: "1px solid " + F.border,
+        <div className="farmer-mobile-nav" style={{ display: "none", background: F.card, borderTop: "1px solid " + F.border,
           padding: "8px 0", position: "sticky", bottom: 0 }}>
           {NAV_ITEMS.slice(0, 5).map(item => (
             <button key={item.id} onClick={() => setPage(item.id)}

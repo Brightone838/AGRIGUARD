@@ -1,11 +1,7 @@
-import { createClient } from "@supabase/supabase-js";
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_KEY
-);
+import { getServerSupabase } from "@/lib/server-supabase";
 
 export async function GET(request) {
+  const supabase = getServerSupabase();
   const { searchParams } = new URL(request.url);
   const city = searchParams.get("city") || "Nakuru, Kenya";
   const KEY  = process.env.OPENWEATHER_KEY;
